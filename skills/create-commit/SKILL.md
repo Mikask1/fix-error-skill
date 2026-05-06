@@ -1,9 +1,9 @@
 ---
 name: create-commit
-description: Stages and commits changes using NexaCore conventional commit format. Splits into multiple commits for separation of concern. Use when the user says "commit this", "create a commit", or "stage and commit".
+description: Stages and commits changes using conventional commit format. Splits into multiple commits for separation of concern. Use when the user says "commit this", "create a commit", or "stage and commit".
 ---
 
-# Create Commit (NexaCore Standards)
+# Create Commit
 
 ## Workflow
 
@@ -46,5 +46,3 @@ Token expiry was not checked before retrying, causing 401 loops.
 | `hotfix` | Emergency production fix |
 | `release` | Version bump or release prep |
 
-## Author
-NexaCore Engineering Platform Team

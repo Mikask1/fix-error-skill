@@ -131,5 +131,3 @@ ORDER BY idx_scan ASC;
 - **ALWAYS use `LIMIT`** — never run unbounded SELECT on unknown-size tables
 - **If a write operation is needed**, stop and tell the user — do not attempt it here
 
-## Author
-NexaCore Engineering Platform Team

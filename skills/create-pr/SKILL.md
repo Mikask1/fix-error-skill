@@ -1,13 +1,13 @@
 ---
 name: create-pr
-description: Creates a PR following NexaCore company standards — feature branch, Jira ticket reference, 2 required reviewers, squash merge. Use when the user says "create a PR", "open a PR", "ship this", or "make a PR".
+description: Creates a PR following company standards — feature branch, Jira ticket reference, 2 required reviewers, squash merge. Use when the user says "create a PR", "open a PR", "ship this", or "make a PR".
 ---
 
-# Create PR (NexaCore Standards)
+# Create PR
 
-Opens a pull request following NexaCore's engineering standards. Assumes code is already committed — if not, run `/create-commit` first.
+Opens a pull request following engineering standards. Assumes code is already committed — if not, run `/create-commit` first.
 
-## NexaCore PR Standards
+## PR Standards
 
 | Rule | Requirement |
 |------|------------|
@@ -96,7 +96,7 @@ gh pr edit <pr-number> --add-reviewer <handle1>,<handle2>
 
 If reviewers are unknown, leave a comment:
 ```
-gh pr comment <pr-number> --body "⚠️ Please add 2 reviewers before merging (NexaCore policy: 2 approvals required)."
+gh pr comment <pr-number> --body "⚠️ Please add 2 reviewers before merging (2 approvals required)."
 ```
 
 ### 6. Return the PR URL
@@ -112,5 +112,3 @@ gh pr comment <pr-number> --body "⚠️ Please add 2 reviewers before merging (
 - **PR body must be fully filled in** — no open placeholder comments
 - **Remind user to squash merge** — not merge commit or rebase
 
-## Author
-NexaCore Engineering Platform Team

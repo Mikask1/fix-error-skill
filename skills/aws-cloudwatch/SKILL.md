@@ -131,7 +131,7 @@ On macOS use `date -v-1H +%s` instead of `date -d`.
 
 ---
 
-## Common log group patterns (NexaCore)
+## Common log group patterns
 
 | Pattern | Service type |
 |---------|-------------|
@@ -164,5 +164,3 @@ If you hit `AccessDeniedException`, tell the user which permission is missing.
 - **Prefer Insights for groups > 1GB** — `get-log-events` is inefficient at scale
 - **Use milliseconds for `filter-log-events` time flags**, seconds for Insights
 
-## Author
-NexaCore Engineering Platform Team

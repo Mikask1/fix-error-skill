@@ -3,29 +3,37 @@ name: jira-ticket
 description: Creates or reads a Jira ticket. Use when the user says "create a Jira ticket", "log this in Jira", "open a ticket", "read this ticket", "get ticket details", "what does JIRA-XXX say", or when a workflow needs to create or fetch a ticket.
 ---
 
-# Jira Ticket 
+# Jira Ticket
 
-Creates or reads Jira tickets following the user issue tracking conventions.
+Creates or reads Jira tickets via the Atlassian MCP server.
 
-## Jira Projects
+## MCP Setup (required)
 
-| Project Key | Use case |
-|-------------|----------|
+This skill requires the Atlassian MCP server. If not yet configured, tell the user:
+
+> "The Jira MCP is not configured. See [`JIRA_MCP_SETUP.md`](JIRA_MCP_SETUP.md) for setup instructions, or paste the ticket content manually."
+
+All Jira operations use fully-qualified MCP tool names: `mcp__atlassian__<tool>`.
+
+---
+
+## Projects
+
+| Key | Use case |
+|-----|----------|
 | `ENG` | Engineering bugs, tech debt, infra |
 | `FEAT` | New product features |
 | `INC` | Production incidents |
 | `SEC` | Security issues |
 | `OPS` | DevOps / platform / tooling |
 
-Default to `ENG` if the context is a bug or error fix. Use `INC` for production incidents detected from logs.
-
----
+Default to `ENG` for bugs. Use `INC` for production incidents from logs.
 
 ## Ticket Types
 
 | Type | When to use |
 |------|-------------|
-| `Bug` | Something is broken in production or staging |
+| `Bug` | Something broken in production or staging |
 | `Task` | Work item that isn't a bug or feature |
 | `Story` | User-facing feature or improvement |
 | `Incident` | Active production outage or data issue |
@@ -34,26 +42,19 @@ Default to `ENG` if the context is a bug or error fix. Use `INC` for production 
 
 ## Read a Ticket
 
-### Fetch ticket details
-
-Use the Jira MCP tool if available:
 ```
-mcp__jira__get_issue
-  issue_key: <TICKET_ID>   (e.g. ENG-4821)
+mcp__atlassian__get_issue
+  issue_key: <TICKET_ID>
 ```
 
-If no Jira MCP is configured, ask the user to paste the ticket content.
-
-### Output format
-
-Present the ticket as:
+Present the result as:
 
 ```
 ## <TICKET_ID>: <Summary>
 
-- **Type**: <Bug|Task|Story|Incident>
-- **Priority**: <Critical|High|Medium|Low>
-- **Status**: <To Do|In Progress|In Review|Done>
+- **Type**: <type>
+- **Priority**: <priority>
+- **Status**: <status>
 - **Reporter**: <name>
 - **Assignee**: <name or unassigned>
 - **Labels**: <labels>
@@ -69,37 +70,32 @@ Present the ticket as:
 <comments>
 ```
 
-Return all fields to the caller so they can be used in fix plans, branch names, and PR titles.
+Return all fields to the caller for use in fix plans, branch names, and PR titles.
 
 ---
 
 ## Create a Ticket
 
-### 1. Gather ticket details
+### 1. Gather details
 
-Collect (or infer from context):
-- **Summary** — one-line title describing the issue
-- **Project** — from the table above
+Collect or infer from context:
+- **Summary** — one-line title
+- **Project** — from table above
 - **Type** — Bug / Task / Story / Incident
-- **Priority** — Critical / High / Medium / Low
-- **Description** — see template below
-- **Labels** — service name(s) affected (e.g. `payment-service`, `auth-service`)
-- **Component** — the system area (e.g. `API`, `Database`, `Auth`, `Payments`)
+- **Priority** — see criteria below
+- **Labels** — affected service names (e.g. `payment-service`)
+- **Component** — system area (e.g. `API`, `Database`, `Auth`)
 
-If creating from an incident (e.g. from `fix-error` workflow), use the error details directly.
-
-### 2. Determine priority
+### 2. Priority criteria
 
 | Priority | Criteria |
 |----------|----------|
 | `Critical` | Production down, data loss, security breach |
 | `High` | Major feature broken, significant user impact |
 | `Medium` | Degraded functionality, workaround exists |
-| `Low` | Minor issue, cosmetic, or low-traffic path |
+| `Low` | Minor, cosmetic, or low-traffic path |
 
-### 3. Write the ticket description
-
-Use this template:
+### 3. Write the description
 
 ```markdown
 ## Summary
@@ -110,7 +106,7 @@ Use this template:
 - Severity: <ERROR / CRITICAL / WARN>
 - Timestamp: <when it occurred>
 
-## Steps to Reproduce (for bugs)
+## Steps to Reproduce
 1.
 2.
 3.
@@ -122,11 +118,9 @@ Use this template:
 <!-- What is happening instead -->
 
 ## Error Details
-```
 <ERROR_TYPE>: <ERROR_MESSAGE>
 
 <STACK_TRACE first 10 lines>
-```
 
 ## Proposed Fix (optional)
 <!-- Brief description of likely fix approach -->
@@ -137,13 +131,12 @@ Use this template:
 - [ ] No regressions in related flows
 ```
 
-Fill in every section with real content. For incidents triggered by `fix-error`, paste the log analysis output directly into "Error Details".
+Fill every section. For incidents from `fix-error`, paste the log analysis output into "Error Details".
 
-### 4. Create the ticket
+### 4. Create via MCP
 
-Use the Jira MCP tool if available:
 ```
-mcp__jira__create_issue
+mcp__atlassian__create_issue
   project: <PROJECT_KEY>
   summary: <one-line title>
   issue_type: <Bug|Task|Story|Incident>
@@ -153,18 +146,18 @@ mcp__jira__create_issue
   components: [<component>]
 ```
 
-If no Jira MCP is configured, output the complete ticket as a formatted markdown block so the user can paste it into Jira manually.
+If MCP is unavailable, output the complete ticket as a markdown block for manual entry.
 
 ### 5. Return the ticket ID
 
-Return the created ticket ID (e.g. `ENG-4821`) to the caller so it can be referenced in branches and PR titles.
+Return the created ID (e.g. `ENG-4821`) so it can be used in branch names and PR titles.
 
 ---
 
 ## Critical Rules
 
-- **NEVER create a ticket without a meaningful summary** — ask the user if unclear
-- **NEVER set priority to Critical/High without justification** — document the criteria met
-- **For security issues (`SEC`), do not include exploit details in the description** — use private Jira fields or a separate secure channel
-- **Always fill the Acceptance Criteria section** — tickets without it cannot be closed
+- **NEVER create a ticket without a meaningful summary** — ask if unclear
+- **NEVER set Critical/High without justification** — state which criteria was met
+- **For `SEC` tickets, omit exploit details** — use private Jira fields or a secure channel
+- **Always fill Acceptance Criteria** — tickets without it cannot be closed
 
