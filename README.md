@@ -146,29 +146,3 @@ What Claude does automatically:
 | `inventory-service` | `github.com/<your-org>/inventory-service` |
 
 If your service isn't listed, Claude will ask for the repo URL.
-
----
-
-## Troubleshooting
-
-**Jira MCP not configured** — Claude will ask you to paste the ticket manually. Follow Step 1 to automate this.
-
-**AWS CLI not authenticated** — run `aws sts get-caller-identity` and follow the error.
-
-**Service not found in mapping** — provide the repo URL when prompted.
-
-**Tests still failing after 3 iterations** — Claude halts. Review `FIX_PLAN.md` in `/tmp/fix-error/<service>/` and continue manually.
-
-**PR not assigned to me** — make sure `gh auth login` is done.
-
----
-
-## Related Skills
-
-| Skill | Purpose |
-|-------|---------|
-| `jira-ticket` | Read or create Jira tickets independently |
-| `aws-cloudwatch` | Query CloudWatch logs independently |
-| `postgresql` | Inspect the database independently |
-| `create-pr` | Open a PR independently |
-| `create-commit` | Stage and commit changes |
