@@ -1,18 +1,8 @@
 {
   "name": "fix-error",
   "description": "End-to-end incident response: reads Jira ticket, analyzes CloudWatch logs, clones repo, writes TDD tests, implements fix, opens PR.",
-  "version": "1.0.0",
-  "skills": [
-    "fix-error",
-    "aws-cloudwatch",
-    "create-commit",
-    "create-pr",
-    "jira-ticket",
-    "postgresql",
-    "create-skills"
-  ],
-  "agents": [
-    "aws-log-analyzer",
-    "unittest-writer"
-  ]
+  "author": {
+    "name": "Mikask1",
+    "url": "https://github.com/Mikask1"
+  }
 }

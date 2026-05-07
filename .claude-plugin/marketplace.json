@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "fix-error",
+  "description": "End-to-end incident response: reads Jira ticket, analyzes CloudWatch logs, clones repo, writes TDD tests, implements fix, opens PR.",
+  "owner": {
+    "name": "Mikask1",
+    "url": "https://github.com/Mikask1"
+  },
+  "plugins": [
+    {
+      "name": "fix-error",
+      "description": "End-to-end incident response automation. Read Jira -> analyze logs -> clone repo -> TDD -> fix -> PR.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
