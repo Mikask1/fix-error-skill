@@ -8,7 +8,7 @@ End-to-end incident response: read Jira ticket -> analyze AWS logs -> clone repo
 
 ```bash
 claude plugin marketplace add Mikask1/fix-error-skill
-claude plugin install fix-error@Mikask1/fix-error-skill
+claude plugin install fix-error@fix-error
 ```
 
 ---
