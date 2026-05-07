@@ -4,6 +4,15 @@ End-to-end incident response: read Jira ticket -> analyze AWS logs -> clone repo
 
 ---
 
+## Installation
+
+```bash
+claude plugin marketplace add Mikask1/fix-error-skill
+claude plugin install fix-error@Mikask1/fix-error-skill
+```
+
+---
+
 ## Prerequisites
 
 - [Jira MCP](#step-1----set-up-the-jira-mcp)
@@ -15,9 +24,9 @@ End-to-end incident response: read Jira ticket -> analyze AWS logs -> clone repo
 
 ## Quick Start
 
-1. Open Claude Code in this project
-2. Type: `fix this error` or `fix ENG-4821`
-3. If you have a Jira ticket ID, provide it when asked
+1. Install the plugin (see [Installation](#installation))
+2. Complete the [Prerequisites](#prerequisites) setup
+3. Open Claude Code and type: `fix this error` or `fix ENG-4821`
 4. The skill runs all 10 steps automatically and returns a PR URL when done
 
 ---
